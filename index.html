@@ -31,7 +31,8 @@
           const soldOut = item.stock <= 0;
           const el = document.createElement(soldOut ? "div" : "a");
           el.className = "card" + (soldOut ? " sold-out" : "");
-          if (!soldOut) el.href = "form.html?package=" + encodeURIComponent(item.id);
+          if (!soldOut) el.href = "form.html?package=" + encodeURIComponent(item.id)
+                      + "&name=" + encodeURIComponent(item.name);
 
           el.innerHTML = `
             <h2>${item.name}</h2>

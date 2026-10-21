@@ -30,20 +30,12 @@
   <script src="config.js"></script>
   <script>
     const params = new URLSearchParams(location.search);
-    const pkgLabel = document.getElementById("pkgLabel");
-    pkgLabel.textContent = "Memuat...";
+    const pkg = params.get("package");
+    const pkgName = params.get("name");
+    if (!pkg) location.href = "index.html";
 
-    fetch(API_URL)
-      .then(r => r.json())
-      .then(data => {
-        const p = data.items.find(x => String(x.id) === pkg);
-        if (!p) { location.href = "index.html"; return; }
-        if (p.stock <= 0) { location.href = "index.html"; return; }
-        pkgLabel.textContent = "Paket dipilih: " + p.name;
-      })
-      .catch(() => {
-        pkgLabel.textContent = "Paket dipilih: " + pkg;
-      });
+    const pkgLabel = document.getElementById("pkgLabel");
+    pkgLabel.textContent = "Paket dipilih: " + (pkgName || pkg);
     const form = document.getElementById("orderForm");
     const btn = document.getElementById("submitBtn");
     const result = document.getElementById("result");
