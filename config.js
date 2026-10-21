@@ -1,7 +1,12 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbxUYyBFR8Mn861MStRfj8ouC_Jz9u43pTdrw9jIx7kd16zOj22cWhEFayJhfmV2ODzHEw/exec";
 
-let posts = [];
+const PAYMENT_LINKS = {
+  paket1: "https://pay.doku.com/p-link/p/5zfdkQK68Y",
+  paket2: "https://pay.doku.com/p-link/p/LINK_PAKET_2"
+};
+
+  let posts = [];
 
 function getVoterId() {
   let voterId = localStorage.getItem("voter_id");

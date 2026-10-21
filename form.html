@@ -20,10 +20,9 @@
       <input type="text" id="nim" name="nim" required inputmode="numeric">
 
       <label for="angkatan">Angkatan</label>
-      <input type="text" id="angkatan" name="angkatan" required placeholder="contoh: 2024">
-      <a href"//pay.doku.com/p-link/p/5zfdkQK68Y">
-        <button type="submit" id="submitBtn">Submit</button>
-      </a>
+            <input type="text" id="angkatan" name="angkatan" required placeholder="contoh: 2024">
+
+      <button type="submit" id="submitBtn">Submit</button>
       <p id="result" class="result"></p>
     </form>
   </main>
@@ -32,7 +31,7 @@
   <script>
     const params = new URLSearchParams(location.search);
     const pkg = params.get("package");
-    if (!pkg) location.href = "index.html";
+    if (!pkg || !PAYMENT_LINKS[pkg]) location.href = "index.html";
 
     document.getElementById("pkgLabel").textContent =
       "Paket dipilih: " + pkg.replace("paket", "Paket ");
@@ -56,7 +55,6 @@
       };
 
       try {
-        // text/plain avoids CORS preflight, which Apps Script doesn't handle
         const res = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -66,10 +64,12 @@
 
         if (data.ok) {
           form.reset();
-          result.textContent = "Berhasil! Pesanan kamu sudah tercatat.";
+          result.textContent = "Berhasil! Mengarahkan ke halaman pembayaran...";
           result.classList.add("success");
           btn.textContent = "Terkirim";
-          setTimeout(() => location.href = "https://pay.doku.com/p-link/p/5zfdkQK68Y", 2500);
+          setTimeout(() => {
+            window.location.href = PAYMENT_LINKS[pkg];
+          }, 2000);
         } else {
           result.textContent = data.error;
           result.classList.add("error");
@@ -84,5 +84,3 @@
       }
     });
   </script>
-</body>
-</html>
