@@ -1,17 +1,17 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, "Poppins", serif;
   background: #fff;
   color: #111;
   min-height: 100vh;
 }
 
-.container { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
-.container.narrow { max-width: 480px; }
+.container { max-width: 900px; margin: 0 auto; padding: 48px 20px; text-align: center }
+.container.narrow { max-width: 480px; text-align: center }
 
 .title {
-  background: #000;
+  background: #2a2e60;
   color: #fff;
   text-align: center;
   font-weight: normal;
