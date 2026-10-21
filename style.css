@@ -7,8 +7,8 @@ body {
   min-height: 100vh;
 }
 
-.container { max-width: 900px; margin: 0 auto; padding: 48px 20px; text-align: center }
-.container.narrow { max-width: 480px; text-align: center }
+.container { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
+.container.narrow { max-width: 480px; }
 
 .title {
   background: #2a2e60;
@@ -27,7 +27,6 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  text-align: center
 }
 
 .card {
@@ -42,7 +41,6 @@ body {
   text-decoration: none;
   color: inherit;
   transition: transform .15s, box-shadow .15s;
-  text-align: center
 }
 
 a.card:hover { transform: translateY(-4px); box-shadow: 0 8px 0 #263a56; }
@@ -51,7 +49,6 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 8px 0 #263a56; }
   background: #000; color: #fff;
   font-weight: normal; font-size: 1.4rem;
   padding: 8px 16px;
-  text-align: center
 }
 
 .price { font-size: 1.3rem; font-weight: bold; text-align: center}
