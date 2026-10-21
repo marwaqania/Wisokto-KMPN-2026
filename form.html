@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pemesanan - Wisnight KMPN</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container narrow">
+    <a href="index.html" class="back">&larr; Kembali</a>
+    <h1 class="title">Form Pemesanan</h1>
+    <p id="pkgLabel" class="pkg-label"></p>
+
+    <form id="orderForm" class="form">
+      <label for="nama">Nama / Name</label>
+      <input type="text" id="nama" name="nama" required autocomplete="name">
+
+      <label for="nim">NIM / Student ID</label>
+      <input type="text" id="nim" name="nim" required inputmode="numeric">
+
+      <label for="angkatan">Angkatan</label>
+      <input type="text" id="angkatan" name="angkatan" required placeholder="contoh: 2024">
+
+      <button type="submit" id="submitBtn">Submit</button>
+      <p id="result" class="result"></p>
+    </form>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const pkg = params.get("package");
+    if (!pkg) location.href = "index.html";
+
+    document.getElementById("pkgLabel").textContent =
+      "Paket dipilih: " + pkg.replace("paket", "Paket ");
+
+    const form = document.getElementById("orderForm");
+    const btn = document.getElementById("submitBtn");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = "Mengirim...";
+      result.textContent = "";
+      result.className = "result";
+
+      const payload = {
+        package: pkg,
+        nama: form.nama.value,
+        nim: form.nim.value,
+        angkatan: form.angkatan.value
+      };
+
+      try {
+        // text/plain avoids CORS preflight, which Apps Script doesn't handle
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          form.reset();
+          result.textContent = "Berhasil! Pesanan kamu sudah tercatat.";
+          result.classList.add("success");
+          btn.textContent = "Terkirim";
+          setTimeout(() => location.href = "index.html", 2500);
+        } else {
+          result.textContent = data.error;
+          result.classList.add("error");
+          btn.disabled = false;
+          btn.textContent = "Submit";
+        }
+      } catch (err) {
+        result.textContent = "Gagal mengirim. Cek koneksi dan coba lagi.";
+        result.classList.add("error");
+        btn.disabled = false;
+        btn.textContent = "Submit";
+      }
+    });
+  </script>
+</body>
+</html>

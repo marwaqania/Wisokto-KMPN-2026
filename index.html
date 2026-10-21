@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wisnight KMPN</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1 class="title">Wisnight KMPN</h1>
+
+    <div id="status" class="status">Memuat data...</div>
+    <section id="products" class="products"></section>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+    const fmt = n => "Rp " + Number(n).toLocaleString("id-ID");
+
+    async function loadProducts() {
+      const box = document.getElementById("products");
+      const status = document.getElementById("status");
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        status.style.display = "none";
+        box.innerHTML = "";
+
+        data.items.forEach(item => {
+          const soldOut = item.stock <= 0;
+          const el = document.createElement(soldOut ? "div" : "a");
+          el.className = "card" + (soldOut ? " sold-out" : "");
+          if (!soldOut) el.href = "form.html?package=" + encodeURIComponent(item.id);
+
+          el.innerHTML = `
+            <h2>${item.name}</h2>
+            <p class="price">${fmt(item.price)}</p>
+            <p class="stock">Stok : ${item.stock}</p>
+            ${soldOut ? '<p class="msg">Maaf, stok habis</p>' : '<span class="cta">Pesan &rarr;</span>'}
+          `;
+          box.appendChild(el);
+        });
+      } catch (e) {
+        status.textContent = "Gagal memuat data. Coba refresh halaman.";
+      }
+    }
+    loadProducts();
+  </script>
+</body>
+</html>
