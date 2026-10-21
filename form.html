@@ -9,7 +9,7 @@
 <body>
   <main class="container narrow">
     <a href="index.html" class="back">&larr; Kembali</a>
-    <h1 class="title">Form Pemesanan</h1>
+    <h1 class="title">RSVP</h1>
     <p id="pkgLabel" class="pkg-label"></p>
 
     <form id="orderForm" class="form">
@@ -30,12 +30,20 @@
   <script src="config.js"></script>
   <script>
     const params = new URLSearchParams(location.search);
-    const pkg = params.get("package");
-    if (!pkg || !PAYMENT_LINKS[pkg]) location.href = "index.html";
+    const pkgLabel = document.getElementById("pkgLabel");
+    pkgLabel.textContent = "Memuat...";
 
-    document.getElementById("pkgLabel").textContent =
-      "Paket dipilih: " + pkg.replace("paket", "Paket ");
-
+    fetch(API_URL)
+      .then(r => r.json())
+      .then(data => {
+        const products = data.products || data;   // sesuaikan dengan format respons API-mu
+        const p = products.find(x => x.id === pkg);
+        if (!p) { location.href = "index.html"; return; }
+        pkgLabel.textContent = "Paket dipilih: " + p.name;
+      })
+      .catch(() => {
+        pkgLabel.textContent = "Paket dipilih: " + pkg;   // fallback kalau API gagal
+      });
     const form = document.getElementById("orderForm");
     const btn = document.getElementById("submitBtn");
     const result = document.getElementById("result");
