@@ -5,15 +5,19 @@ body {
   font-family: "Cormorant Garamond", serif;
   color: #fff;
   background-color: #b08850;
-  background-attachment: fixed;
+  isolation: isolate; 
+  margin: 0;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image:
-    /* terang, kanan atas */
     radial-gradient(ellipse 35% 25% at 92% 3%,  rgba(255, 240, 215, 0.95), transparent),
-    /* terang, kiri bawah */
     radial-gradient(ellipse 40% 30% at 5% 85%,  rgba(255, 228, 185, 0.75), transparent),
-    /* oranye hangat, tengah atas */
     radial-gradient(ellipse 35% 25% at 55% 20%, rgba(225, 160, 80, 0.65),  transparent),
-    /* gelap, kiri atas */
     radial-gradient(ellipse 45% 35% at 10% 25%, rgba(95, 65, 35, 0.55),    transparent);
 }
 
