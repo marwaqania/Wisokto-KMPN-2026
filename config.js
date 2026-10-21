@@ -3,7 +3,7 @@ const API_URL =
 
 const PAYMENT_LINKS = {
   paket1: "https://pay.doku.com/p-link/p/5zfdkQK68Y",
-  paket2: "https://pay.doku.com/p-link/p/5zfdkQK68Y"
+  paket2: "https://pay.doku.com/p-link/p/zLYfCKkGNY"
 };
 
   let posts = [];
