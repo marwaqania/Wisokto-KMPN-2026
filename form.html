@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Pemesanan - Wisnight KMPN</title>
+  <title>RSVP - Wisnight KMPN</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,17 +36,19 @@
     fetch(API_URL)
       .then(r => r.json())
       .then(data => {
-        const products = data.products || data;   // sesuaikan dengan format respons API-mu
-        const p = products.find(x => x.id === pkg);
+        const p = data.items.find(x => String(x.id) === pkg);
         if (!p) { location.href = "index.html"; return; }
+        if (p.stock <= 0) { location.href = "index.html"; return; }
         pkgLabel.textContent = "Paket dipilih: " + p.name;
       })
       .catch(() => {
-        pkgLabel.textContent = "Paket dipilih: " + pkg;   // fallback kalau API gagal
+        pkgLabel.textContent = "Paket dipilih: " + pkg;
       });
     const form = document.getElementById("orderForm");
     const btn = document.getElementById("submitBtn");
     const result = document.getElementById("result");
+
+
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
