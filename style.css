@@ -18,7 +18,6 @@ body::before {
   height: 100lvh;      /* large viewport height: tidak berubah saat address bar naik-turun */
   z-index: -1;
   pointer-events: none;
-  background-image: /* gradient-mu, tidak diubah */
 }
 .logo {
   position: absolute;
