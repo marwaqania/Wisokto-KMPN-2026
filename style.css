@@ -15,9 +15,14 @@ body::before {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100lvh;      /* large viewport height: tidak berubah saat address bar naik-turun */
+  height: 100lvh;
   z-index: -1;
   pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 35% 25% at 92% 3%,  rgba(255, 240, 215, 0.95), transparent),
+    radial-gradient(ellipse 40% 30% at 5% 85%,  rgba(255, 228, 185, 0.75), transparent),
+    radial-gradient(ellipse 35% 25% at 55% 20%, rgba(225, 160, 80, 0.65),  transparent),
+    radial-gradient(ellipse 45% 35% at 10% 25%, rgba(95, 65, 35, 0.55),    transparent);
 }
 .logo {
   position: absolute;
