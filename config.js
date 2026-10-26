@@ -2,7 +2,7 @@ const API_URL =
   "https://script.google.com/macros/s/AKfycbxUYyBFR8Mn861MStRfj8ouC_Jz9u43pTdrw9jIx7kd16zOj22cWhEFayJhfmV2ODzHEw/exec";
 
 const PAYMENT_LINKS = {
-  paket1: "https://pay.doku.com/p-link/p/3V7P85fW6h",
+  paket1: "https://pay.doku.com/p-link/p/AvVb5gUJuL",
   paket2: "https://pay.doku.com/p-link/p/KBYsSo2QtT"
 };
 
