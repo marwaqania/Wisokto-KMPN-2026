@@ -183,3 +183,17 @@ document
 loadPosts();
 
 setInterval(loadPosts, 30000);
+
+const installBtn = document.getElementById("installBtn");
+
+installBtn.addEventListener("click", () => {
+  if (!form.reportValidity()) return;
+
+  sessionStorage.setItem("cicilan", JSON.stringify({
+    package: pkg,
+    nama: form.nama.value.trim(),
+    nim: form.nim.value.trim(),
+    angkatan: form.angkatan.value.trim()
+  }));
+  location.href = "cicilan.html";
+});

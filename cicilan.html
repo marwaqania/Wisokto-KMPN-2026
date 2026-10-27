@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cicilan - Wisnight KMPN</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container narrow">
+    <a href="form.html" id="backLink" class="back">&larr; Kembali</a>
+    <h1 class="title">Cicilan</h1>
+    <p id="pkgLabel" class="pkg-label">Memuat...</p>
+
+    <section class="form">
+      <h2 class="sub">Rincian Cicilan</h2>
+      <div class="terms">
+        <p>Cicilan yang dapat dilakukan adalah cicilan 60%, sehingga master akan membayar Rp84.000 saat ini dan nantinya akan lanjut membayar lewat bendahara paling lambat 10 November 2026. (id line : papadidip)</p>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="agree1">
+        <span>Saya telah membaca dan memahami rincian cicilan di atas.</span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="agree2">
+        <span>Saya setuju dengan seluruh syarat dan ketentuan cicilan.</span>
+      </label>
+
+      <a id="payLink" class="pay-link disabled"
+         href="https://pay.doku.com/p-link/p/cDzm4zMA3Q">
+        Setuju & Lanjut ke Pembayaran &rarr;
+      </a>
+      <p id="result" class="result"></p>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+    const LABEL = "Setuju & Lanjut ke Pembayaran →";
+
+    const order = JSON.parse(sessionStorage.getItem("cicilan") || "null");
+    if (!order) {
+      location.replace("index.html");
+    } else {
+      init();
+    }
+
+    function init() {
+      const payLink = document.getElementById("payLink");
+      const agree1 = document.getElementById("agree1");
+      const agree2 = document.getElementById("agree2");
+      const result = document.getElementById("result");
+      const pkgLabel = document.getElementById("pkgLabel");
+      const backLink = document.getElementById("backLink");
+
+      backLink.href = "form.html?package=" + encodeURIComponent(order.package);
+
+      // label paket
+      fetch(API_URL)
+        .then(r => r.json())
+        .then(data => {
+          const p = data.items.find(x => String(x.id) === String(order.package));
+          pkgLabel.textContent = "Paket dipilih: " + (p ? p.name : order.package);
+        })
+        .catch(() => {
+          pkgLabel.textContent = "Paket dipilih: " + order.package;
+        });
+
+      // aktif hanya kalau KEDUA checkbox dicentang
+      function updateState() {
+        const ok = agree1.checked && agree2.checked;
+        payLink.classList.toggle("disabled", !ok);
+      }
+      agree1.addEventListener("change", updateState);
+      agree2.addEventListener("change", updateState);
+      updateState();
+
+      let sending = false;
+      payLink.addEventListener("click", async (e) => {
+        e.preventDefault(); // tahan navigasi sampai data tersimpan
+        if (!(agree1.checked && agree2.checked) || sending) return;
+
+        sending = true;
+        payLink.classList.add("disabled");
+        payLink.textContent = "Memproses...";
+        result.textContent = "";
+        result.className = "result";
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ ...order, metode: "cicilan", setuju: true })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error);
+
+          sessionStorage.removeItem("cicilan");
+          window.location.href = payLink.href; // langsung ke pembayaran
+        } catch (err) {
+          result.textContent = err.message || "Gagal mengirim. Cek koneksi dan coba lagi.";
+          result.className = "result error";
+          payLink.textContent = LABEL;
+          sending = false;
+          updateState();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
